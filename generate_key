@@ -1,0 +1,21 @@
+<?php
+define('CoreStart',microtime());
+//parent directories
+define('DS',DIRECTORY_SEPARATOR);
+define('ROOT_PATH',dirname(__FILE__).DS);
+define('APP',ROOT_PATH.'app'.DS);
+define('PUBLIC_PATH',ROOT_PATH.'public'.DS);
+
+require_once 'app/config/config_constants.php';
+require_once 'vendor/autoload.php';
+
+$app= require_once 'bootstrap'.DS.'bootstrap.php';
+
+if(php_sapi_name() =='cli')
+{  
+	$mask = hash_hmac('sha256',env('APP_NAME')??'Light','Light');
+
+	print $mask;
+}
+
+die('');

@@ -1,0 +1,28 @@
+<?php
+define('CoreStart',microtime());
+//parent directories
+define('DS',DIRECTORY_SEPARATOR);
+define('ROOT_PATH',dirname(__FILE__).DS);
+define('APP',ROOT_PATH.'app'.DS);
+define('PUBLIC_PATH',ROOT_PATH.'public'.DS);
+
+require_once 'app/config/config_constants.php';
+require_once 'vendor/autoload.php';
+
+$app= require_once 'bootstrap'.DS.'bootstrap.php';
+
+if(php_sapi_name() =='cli')
+{  
+	$mask = "|%6s |%-50s | %-50s|\n";
+	printf('=%-100s','==============================================================================================================');
+	print "\n\r";
+	printf($mask, 'Method', 'Route','Hanlder');
+     foreach ($app->route->all() as $route)
+     {
+     
+     	printf($mask, $route['method'], $route['pattern'],$route['handler'][0].'->('.$route['handler'][1].')');
+     }
+  printf('=%-100s','==============================================================================================================');
+}
+
+die('');

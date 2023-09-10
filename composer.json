@@ -1,0 +1,36 @@
+{
+  "name": "php-mohamed-nabil/googlelogin",
+  "description": "googlelogin api mvc project",
+  "keywords": ["mvc","php","api","google-api","php8","oop"],
+  "type": "project",
+  "require": {
+    "respect/validation": "^2.2",
+    "intervention/image": "^2.7",
+    "nesbot/carbon": "^2.67",
+    "rakit/validation": "dev-master",
+    "league/pipeline": "dev-master",
+    "optimus/onion": "~1.0",
+    "vlucas/phpdotenv": "5.5.x-dev",
+    "verot/class.upload.php": "dev-master",
+    "doctrine/inflector": "2.0.x-dev",
+    "symfony/password-hasher": "5.4.x-dev",
+    "php-mohamed-nabil/style": "dev-master",
+    "league/booboo": "dev-main",
+    "spatie/ignition": "^1.9",
+    "httpsoft/http-server-request": "dev-master",
+    "league/oauth2-facebook": "dev-main"
+    },
+    "autoload":
+  {
+     "files":
+     [
+        "app/core/functions.php",
+         "app/core/process.php"
+     ],
+     "psr-4":
+     {
+       "App\\": "app/"
+     }
+  },
+    "minimum-stability": "dev"
+}

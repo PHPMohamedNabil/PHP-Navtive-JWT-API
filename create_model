@@ -1,0 +1,63 @@
+<?php
+//parent directories
+define('DS',DIRECTORY_SEPARATOR);
+define('ROOT_PATH',dirname(__FILE__).DS);
+define('APP',ROOT_PATH.'app'.DS);
+define('PUBLIC_PATH',ROOT_PATH.'public'.DS);
+
+require_once 'app/config/config_constants.php';
+require_once 'vendor/autoload.php';
+
+
+
+if(php_sapi_name() =='cli')
+{
+        if(isset($argv[1]))
+		{ 
+			$model     = $argv[1];
+            clearstatcache();
+
+            if(!file_exists(MODELS.$model.'.php'))
+            {
+            	 file_put_contents(MODELS.$model.'.php',getModelString($model));
+                  die('Model created '.$model.' successfully');
+              
+            }
+            else
+            {
+            	die("$model already craeted before");
+            }
+
+
+
+	    }
+		else
+		{
+				die('no data input found');
+		}
+}
+else
+{
+	die('');
+}
+
+
+function getModelString($model)
+{
+   $string ='<?php
+
+namespace App\Models;
+
+use App\Core\Model;
+
+class '.$model.' extends Model
+{  
+	//you have to set table attributes her $id,$column_2,$column_3 ...
+	//you should set table name attribute or we can predict it like User to be users ,UserCategory user_categories 
+	
+}';
+
+return $string;
+
+}
+

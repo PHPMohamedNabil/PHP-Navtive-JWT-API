@@ -1,0 +1,87 @@
+<?php
+//parent directories
+define('DS',DIRECTORY_SEPARATOR);
+define('ROOT_PATH',dirname(__FILE__).DS);
+define('APP',ROOT_PATH.'app'.DS);
+define('PUBLIC_PATH',ROOT_PATH.'public'.DS);
+
+require_once 'app/config/config_constants.php';
+require_once 'vendor/autoload.php';
+
+
+
+if(php_sapi_name() =='cli')
+{
+        if(isset($argv[1]))
+		{ 
+			$repo     = $argv[1];
+            clearstatcache();
+
+            if(!file_exists(REPOSITORY.$repo.'.php') && !file_exists(REPOSITORY.$repo.'Interface'.'.php'))
+            {
+            	 file_put_contents(REPOSITORY.$repo.'Interface.php',getInterfaceString($repo.'Interface'));
+            	 file_put_contents(REPOSITORY.$repo.'Repository.php',getRepoString($repo.'Repository',$repo.'Interface'));
+                  die('Repository created '.$repo.' successfully');
+              
+            }
+            else
+            {
+            	die("Repository $repo already craeted before");
+            }
+
+
+
+	    }
+		else
+		{
+				die('no data input found');
+		}
+}
+else
+{
+	die('');
+}
+
+
+function getInterfaceString($interface)
+{
+   $string ='<?php
+
+namespace App\Repositories;
+
+interface '.$interface.'{
+
+	// write interface functions here
+	
+}';
+
+return $string;
+
+}
+
+function getRepoString($repo,$interface)
+{
+   $string ='<?php
+
+namespace App\Repositories;
+
+//use App\Models\Model;
+use App\Repositories\\'.$interface.';
+
+class '.$repo.' implements '.$interface.'{
+
+     public  $model;
+
+     public function __construct()
+     {
+
+          $this->model = new model;
+      
+     
+
+     }
+ }';
+
+return $string;
+
+}

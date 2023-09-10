@@ -1,0 +1,207 @@
+<?php
+//parent directories
+define('DS',DIRECTORY_SEPARATOR);
+define('ROOT_PATH',dirname(__FILE__).DS);
+define('APP',ROOT_PATH.'app'.DS);
+define('PUBLIC_PATH',ROOT_PATH.'public'.DS);
+
+require_once 'app/config/config_constants.php';
+require_once 'vendor/autoload.php';
+
+
+if(php_sapi_name() =='cli')
+{
+       if(isset($argv[1]))
+		{ 
+
+			   $controller_name     = $argv[1];
+            $is_resoruce         = isset($argv[2])?$argv[2]:'';
+            $model               = isset($argv[3])?$argv[3]:'';
+
+            clearstatcache();
+
+            if(!file_exists(CONTROLLERS.$controller_name.'.php'))
+            {
+               if($is_resoruce =='resource' && $model !=='model')
+               {
+	               file_put_contents(CONTROLLERS.$controller_name.'.php',getConrolerResourceString($controller_name));
+	               die('Resource controller created '.$controller_name.' successfully');
+               }
+               elseif($is_resoruce =='resource' && $model =='model')
+               {
+                  file_put_contents(CONTROLLERS.$controller_name.'.php',getConrolerResourceString($controller_name));
+
+                  file_put_contents(MODELS.getModelString($controller_name,true).'.php',getModelString($controller_name));
+
+	               die('Resource controller and model '.getModelString($controller_name,true).' created '.$controller_name.' successfully');
+               }
+               elseif($controller_name && $is_resoruce =='model')
+               {    
+
+               	  file_put_contents(CONTROLLERS.$controller_name.'.php',getConrolerString($controller_name));
+
+               	   file_put_contents(MODELS.getModelString($controller_name,true).'.php',getModelString($controller_name));
+
+	               die('controller and model '.getModelString($controller_name,true).' created '.$controller_name.' successfully');
+
+               }
+               else
+               {
+            	  file_put_contents(CONTROLLERS.$controller_name.'.php',getConrolerString($controller_name));
+                  die('controller created '.$controller_name.' successfully');
+               }
+            }
+            else
+            {
+            	die("$controller_name already craeted before");
+            }
+
+
+
+	    }
+		else
+		{
+				die('no data input found');
+		}
+}
+else
+{
+	die('');
+}
+
+
+function getConrolerString($controller)
+{
+   $string ='<?php
+
+namespace App\Controllers;
+
+use App\Core\Controller;
+use Style\Style;
+
+class '.$controller.' extends Controller
+{  
+	  
+
+	 public function __construct()
+	 {
+	 	//middleware_array,except_methods array(optional)
+        //$this->middleware([\'test\']);
+	 }
+
+	 public function home()
+	 {
+	 	
+        // $request->validate([\'username\'=>\'required|min:2\']);
+       // $model = new model(12);
+		//$model->columns[\'model_title\']=\'updated\';   
+		//$model->columns[\'model_price\']=2500000;  
+         
+       
+        //$model->create([\'model_title\'=>\'coding model\']); //for mass assignment
+		//$model->save(); //for insert
+		//$model->amend();// for update
+		//$model->purge(); //for delete
+		//$model->deleteSoft(12); //for soft delete  
+	 }
+}';
+
+return $string;
+
+}
+
+
+function getConrolerResourceString($controller)
+{
+	 $string ='<?php
+
+namespace App\Controllers;
+
+use App\Core\Controller;
+use Style\Style;
+
+class '.$controller.' extends Controller
+{  
+   
+   public function __construct()
+	 {
+	 	//middleware_array,except_methods array(optional)
+        //$this->middleware([\'test\']);
+	 }
+
+	public function index()
+	{
+        // $request->validate([\'username\'=>\'required|min:2\']);
+       // $model = new model(12);
+		//$model->columns[\'model_title\']=\'updated\';   
+		//$model->columns[\'model_price\']=2500000;  
+         
+       
+        //$model->create([\'model_title\'=>\'coding model\']); //for mass assignment
+		//$model->save(); //for insert
+		//$model->amend();// for update
+		//$model->purge(); //for delete
+		//$model->deleteSoft(12); //for soft delete       
+	}
+
+	public function create()
+	{
+
+	}
+
+	public function store()
+	{
+
+	}
+
+	public function show($id)
+	{
+
+	}
+
+	public function edit($id)
+	{
+
+	}
+	
+	public function update()
+	{
+
+	}
+
+	public function destroy($id)
+	{
+
+	}
+
+}';
+
+return $string;
+}
+
+
+
+function getModelString($model,$return_name=false)
+{
+   $model=preg_replace('#Controller|Controllers|controller|controllers#','',$model);
+   if($return_name)
+   {
+   	  return $model;
+   }
+
+   $string ='<?php
+
+namespace App\Models;
+
+use App\Core\Model;
+
+class '.$model.' extends Model
+{  
+	//you have to set table attributes her $id,$column_2,$column_3 ...
+	//you should set table name attribute or we can predict it like User to be users ,UserCategory user_categories 
+	
+}';
+
+return $string;
+
+}

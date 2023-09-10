@@ -1,0 +1,47 @@
+<?php
+//parent directories
+define('DS',DIRECTORY_SEPARATOR);
+define('ROOT_PATH',dirname(__FILE__).DS);
+define('APP',ROOT_PATH.'app'.DS);
+define('PUBLIC_PATH',ROOT_PATH.'public'.DS);
+
+require_once 'app/config/config_constants.php';
+require_once 'vendor/autoload.php';
+
+use App\Core\Database\NativeDB;
+use Dotenv\Dotenv;
+
+Dotenv::createMutable(ROOT_PATH)->load();
+
+if(php_sapi_name() =='cli')
+{ 
+
+$migration = new NativeDB;
+
+if(isset($argv))
+{    
+	if(isset($argv) && count($argv)==2)
+	{
+	  if(strstr($argv[1],'roll'))
+	  {
+	  	  unset($argv[0]);
+	  	  $roll=explode('=',$argv[1])[1];
+	  	 
+	  	  if($roll =='all')
+	  	  {
+	  	  	return $migration->rollback($roll,true); 
+	  	  }
+	  	  return $migration->rollback($roll); 
+	  	
+	  }
+	}
+	
+}
+
+$migration->applyMigrations();
+
+}
+else
+{
+	 exit('');
+}

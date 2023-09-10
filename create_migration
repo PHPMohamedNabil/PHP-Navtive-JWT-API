@@ -1,0 +1,76 @@
+<?php
+//parent directories
+define('DS',DIRECTORY_SEPARATOR);
+define('ROOT_PATH',dirname(__FILE__).DS);
+define('APP',ROOT_PATH.'app'.DS);
+define('PUBLIC_PATH',ROOT_PATH.'public'.DS);
+
+require_once 'app/config/config_constants.php';
+require_once 'vendor/autoload.php';
+
+if(php_sapi_name() =='cli')
+{
+        if(isset($argv[1]))
+		{ 
+
+			$migration_name     = $argv[1].'__'.date('Y_m_d_H_i_s',time());
+            
+
+            clearstatcache();
+
+          //  die(MIGRATIONS.$migration_name.'.php');
+
+            if(!file_exists(MIGRATIONS.$migration_name.'.php'))
+            {
+               
+                file_put_contents(MIGRATIONS.$migration_name.'.php',getMigrationString($migration_name));
+                die('migration '.$migration_name.'created');
+
+
+	        }
+		    else
+		    {
+				die('migration already exists');
+		    }
+        }
+        else
+        {
+	      die('no data supported to this operation');
+        } 
+
+}
+else
+{
+	die('');
+}
+
+function getMigrationString($migration_name)
+{
+   $string ='<?php
+
+namespace App\Migrations;
+
+use App\Core\Database\NativeDB;
+
+class '.$migration_name.'{
+      
+     
+	   public function up($db)
+	   {
+         
+           
+
+	   }
+
+	   public function down($db)
+	   { 
+
+	  
+
+	   }
+	   
+}';
+
+return $string;
+
+}
