@@ -14,6 +14,7 @@ Getstarted with project:
 
 ## install composer
 after download the project folder just install composer required library in command line
+
 ```php 
 composer install
 ```
@@ -21,11 +22,12 @@ composer install
 to install db scheme run:
 ``php migrate```
 
-**for using a seeded database with example data you can import database file native.sql**
+**for using a seeded database with example data you can import database file native_api.sql**
 
 # env file
 
 you can browse .env file to check and configure database connection and web app settings:
+
 ```
 APP_NAME=NativeApi
 SECRET_KEY=4fe8895cff6b23cd1f49b1c14c34a5a161248d1fba2d55392d3ef7d3d6296811
@@ -44,8 +46,11 @@ feal free to edit the above setting to your enviroment settings.
 
 ## generate app secret key
 this secert key important as it is important in hashing data algorithim it is hashes application name and uses it hashing process as secret key.
+
 **run command php generate_key** 
+
 ![generate key](https://github.com/PHPMohamedNabil/PHP-Navtive-JWT-API/assets/29188634/d0bfe349-d6a7-4030-977c-674f5f5b613f)
+
 you will see key generated take it and copy it in  as a value of SECERET_KEY in .env file
 
 # Routes 
