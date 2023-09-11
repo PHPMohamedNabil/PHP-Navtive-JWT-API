@@ -1,6 +1,6 @@
 # PHP-Navtive-JWT-API
 It is an mvc example project for REST API and JWT authentication.
-A simple example for REST API without in native php without using any third party libararies.
+A simple example for REST API in native php without using any third party libraries.
 
 # MVC architecture
 
